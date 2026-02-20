@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo list</title>
+</head>
+<body>
+    <form name="myform" onsubmit="addTask(event)" id="myform">
+        <label for="taskname">Enter Task Name:</label>
+        <input type="text" id="taskname"name="taskname">
+        <br>
+        <p>Select the task status :</p>
+        <input type="radio" name="taskstatus" id="complete" value="complete">
+        <label for="complete">Completed</label>
+        <input type="radio" name="taskstatus" value="incomplete" id="incomplete" checked>
+        <label for="incomplete">Not Completed</label>
+        <p>Select the task priority :</p>
+        <!-- why not radio button ??
+        <select name="priority" id="priority">
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+        </select>
+        -->
+       <input type="radio" name="priority" id="low" value="low" >
+        <label for="low">Low</label> 
+        <input type="radio" name="priority" id="medium" value="medium">
+        <label for="medium">Medium</label>
+         <input type="radio" name="priority" id="high" value="high" checked>
+        <label for="high">High</label>
+        <br>
+        <br>
+        <button>Add Task</button>
+    </form>
+</body>
+<script>
+    function getinputs(){
+       // const [taskelement,taskvalue]=[document.getElementById('taskname'),document.getElementById('taskname').value];
+       const taskelement = document.getElementById('taskname');
+       var taskvalue="";
+      const inp = taskelement.value;
+      if(inp)
+      {
+        taskvalue=inp;
+      }
+      else{
+        alert('task name cant be empty');
+        document.getElementById('myform').reset();
+        return undefined;
+      }
+
+     // }
+      // const elements =document.getElementsByTagName('input');
+    //    var taskname = '';
+    //    for(let i=0;i<elements.length;i++){
+    //     if(elements[i].name=="taskname"){
+    //         taskname = elements[i].value;
+    //     }
+    //    }
+   // const taskname = document.getElementsByTagName('input')[0].value;
+  // const taskname = document.querySelector('input[name="taskname"]').value;
+ // const taskname = document.forms["myform"]["taskname"].value;
+ // const taskname = document.getElementById("myform").elements["taskname"].value;
+
+ //geting values of the radio buttons
+//  let selectedstatus = document.querySelector('input[name="taskstatus"]:checked').value;
+//  if(selectedstatus)
+//        console.log(selectedstatus)
+// let selectedstatus='';
+// let radiobuttons = document.getElementsByName('taskstatus');
+//      for(let radio of radiobuttons)
+//      {
+//         if(radio.checked)
+//      {
+//         selectedstatus=radio.value;
+//      }
+//      }
+//      console.log(selectedstatus)
+ const taskstatus = document.getElementById("myform").elements["taskstatus"].value;
+
+// const radiobuttons = document.querySelectorAll('input[name="taskstatus"]');
+// radiobuttons.forEach(radio=>{
+//     if(radio.checked)
+// {
+//     selectedstatus=radio.value;
+// }
+// })
+//  console.log(selectedstatus);
+// let radiobuttons = [...document.getElementsByName("taskstatus")];
+// let selectedbutton = radiobuttons.find(r=>
+//     r.checked);
+//     console.log(selectedbutton.value);
+ const taskpriority = document.getElementById("myform").elements["priority"].value;
+ console.log(taskvalue,taskpriority,taskstatus);
+ return [taskvalue,taskstatus,taskpriority];
+    }
+    //Geting the inputs from the user
+    function addTask(event){
+        event.preventDefault();
+       const data = getinputs();
+       if(data===undefined)
+       {
+     console.log("no data found");
+       }
+       else{
+        console.log(data);
+       }
+       
+
+    }
+</script>
+</html>
