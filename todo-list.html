@@ -4,16 +4,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo list</title>
+    <style>
+    body{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        margin: 60px;
+    }
+    p{
+        font-weight: bold;
+        font-size: 20px;
+    }
+     #mytasks,#mylogs{
+        list-style-type:none;
+        padding:0;
+    }
+    #taskname{
+        border: 2px solid;
+        border-radius: 8px;
+        margin-right: 10px;
+        font-weight: bolder;
+        font-size: 20px;
+        background-color: rgb(247, 242, 236);
+    }
+    #mylogs{
+        height: 200px;
+        overflow-y: scroll;
+    }
+    #mytasks{
+        height: 400px;
+        overflow-y: scroll;
+    }
+     li{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        border:1px solid black;
+        margin-bottom:10px;
+        border-radius: 20px;
+        padding:10px;
+    }
+    input[type="radio"]
+    {
+        margin-right: 5px;
+    }
+    input[type="radio"]:checked
+    {
+        accent-color: rgb(0, 21, 255);
+    }
+    
+    label{
+        font-weight:550;
+        cursor: pointer;
+        margin-right: 5px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    fieldset{
+        border: 4px solid ;
+        border-radius: 20px;
+        padding: 50px 26px 50px 26px;
+      /*  padding-top:50px;
+        padding-left: 26px;
+        padding-right: 26px;
+        padding-bottom: 50px; */
+    }
+     button{
+        margin-left:10px;
+    }
+    legend{
+        text-align: center;
+        font-size: 31px;
+        font-weight: bolder;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    .filters-container{
+        margin: 20px;
+        display: flex;
+        gap: 20px;
+    }
+    .filters-container select{
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        cursor: pointer;
+        outline: none;
+        transition: 0.3s;
+    }
+    select:focus{
+        border-color: #007bffd5;
+    }
+    option{
+        color: #333;
+        background-color: #f5f8f9;
+        font-size: 16px;
+    }
+    #addtask{
+        background-color: lightgreen;
+        padding: 6px 12px 6px 12px;
+        border-radius: 12px;
+        font-weight: bold;
+    }
+    #tasknamei{
+        border: 2px solid;
+        padding: 8px 12px 8px 12px;
+        border-radius: 8px;
+        margin-right: 20px;
+        font-weight: bolder;
+        font-size: 20px;
+        background-color: rgb(247, 242, 236);
+    }
+    #priority{
+        border: 2px solid;
+        padding: 10px 8px 10px 8px;
+        border-radius: 8px;
+        margin-right: 20px;
+        background-color: rgb(228, 35, 31);
+    }
+     #date{
+      
+         padding: 10px 8px 10px 8px;
+        border-radius: 8px;
+        margin-right: 20px;
+        font-weight: bold;
+        color: rgb(77, 77, 77);
+        background-color: rgb(60, 245, 239);
+    }
+     #time{
+       
+        padding: 10px 8px 10px 8px;
+        border-radius: 8px;
+        font-weight: bold;
+        color: rgb(74, 73, 73);
+        margin-right: 20px;
+        background-color: rgb(77, 203, 234);
+    }
+     #savebtn{
+        background-color: lightblue;
+         padding: 10px 8px 10px 8px;
+        border-radius: 12px;
+        font-weight: bold;
+    }
+    button{
+         padding: 6px 12px 6px 12px;
+        border-radius: 12px;
+        font-weight: bold;
+    }
+    .btn{
+         padding: 6px 12px 6px 12px;
+        border-radius: 12px;
+        font-weight: bold;
+    }
+    li{
+        display: flex;
+    }
+    li p{
+        display: flex;
+    }
+    </style>
 </head>
 <body>
     <form name="myform" onsubmit="addTask(event)" id="myform">
-        <label for="taskname">Enter Task Name:</label>
+       <fieldset>
+        <legend>Todo List</legend>
+         <label for="taskname">Enter Task Name:</label>
         <input type="text" id="taskname"name="taskname">
         <br>
         <p>Select the task status :</p>
-        <input type="radio" name="taskstatus" id="complete" value="complete">
+        <input type="radio" name="taskstatus" id="complete" value="completed">
         <label for="complete">Completed</label>
-        <input type="radio" name="taskstatus" value="incomplete" id="incomplete" checked>
+        <input type="radio" name="taskstatus" value="incompleted" id="incomplete" checked>
         <label for="incomplete">Not Completed</label>
         <p>Select the task priority :</p>
         <!-- why not radio button ??
@@ -31,11 +191,27 @@
         <label for="high">High</label>
         <br>
         <br>
-        <button>Add Task</button>
+        <button id="addtask">Add Task</button>
+       </fieldset>
     </form>
+    <div class="filters-container">
+        <select name="filter" id="filter">
+        <option value="all">All Tasks</option>
+        <option value="completed">Completed Tasks</option>
+        <option value="incompleted">Incomplete Tasks</option>
+    </select>
+    <select name="filterpriority" id="filterpriority">
+        <option value="all">All Priorities</option>
+        <option value="high">High Priority</option>
+        <option value="medium">Medium Priority</option>
+        <option value="low">Low Priority</option>
+    </select>
+    </div>
+    <ul id="mytasks"></ul>
+    <ul id="mylogs"></ul>
 </body>
 <script>
-    function getinputs(){
+ /*   function getinputs(){
        // const [taskelement,taskvalue]=[document.getElementById('taskname'),document.getElementById('taskname').value];
        const taskelement = document.getElementById('taskname');
        var taskvalue="";
@@ -47,7 +223,6 @@
       else{
         alert('task name cant be empty');
         document.getElementById('myform').reset();
-        return undefined;
       }
 
      // }
@@ -94,20 +269,337 @@
  const taskpriority = document.getElementById("myform").elements["priority"].value;
  console.log(taskvalue,taskpriority,taskstatus);
  return [taskvalue,taskstatus,taskpriority];
+   //    const data = getinputs();
+    //    if(data===undefined)
+    //    {
+    //  console.log("no data found");
+    //    }
+    //    else{
+    //     console.log(data);
+    //    }
     }
     //Geting the inputs from the user
+    */
+//todos is the array of objects containg the actual data
+    let todos;
     function addTask(event){
         event.preventDefault();
-       const data = getinputs();
-       if(data===undefined)
+        //preventing refresh after submiting the form
+         const taskelement = document.getElementById('taskname');
+       var taskvalue="";
+      const inp = taskelement.value;
+      if(inp)
+      {
+        //if user entered an value then assign the user entered value to taskvalue variable
+        taskvalue=inp;
+      }
+      else{
+        //if user doesnt entered anything then the condition fails and this else blocks executes
+        //i used an alert predefined function and passed an message task name cant be empty
+        alert('task name cant be empty');
+        //after displaying alert i  reset the values of form to its default
+        document.getElementById('myform').reset();
+        // i break the function execution using return statement which is also called as abnormal termination of function
+        return;
+      }
+      // i stored the values that are entered by the user in variables 
+      const taskstatus = document.getElementById("myform").elements["taskstatus"].value;
+      const taskpriority = document.getElementById("myform").elements["priority"].value;
+       console.log(taskvalue,taskpriority,taskstatus);
+       //i called an function named gettodos to make an api call and to assign the data to todos which acts as a global varibale 
+       //and also contains the actual data
+       getodos();
+       //i checked the task with same name is exists or not i used some an array method which returns if the value matches
+       if(todos.some(t=>t.taskname==taskvalue))
        {
-     console.log("no data found");
+        //i displayed an alert
+        alert('task already exists');
+        //i called gettodos function to get reassign the data and re render the ui 
+        getodos();
+        return;
        }
-       else{
-        console.log(data);
-       }
-       
+       //made an api call to the json which is runing on localhost with port number 3000 and with the end point todos with post method 
+       fetch("http://localhost:3000/todos",{
+        method:"POST",
+        headers:{
+            //telling the server it contains json data 
+            "Content-Type":"application/json"
+        },body:JSON.stringify({
+            //converted the object into json string using json.stringify 
+            taskname:taskvalue,
+            status:taskstatus,
+            priority:taskpriority,
+            date:new Date().toLocaleDateString(),
+            time:new Date().toLocaleTimeString()
+        })
+       }).then(response=>{
+        //after api call it sends an data and an confirmation msg that data is called response and also that confirmation is called as status code 
+        response.json();
+        //we convert the response into previous format like converting into an json object
+        addlog(`Task with name ${taskvalue} added`);
+        // i called add log function and sent an message to the function 
+        
+       })
+       .then(data=>{
+        //i re-rendered the ui by calling gettos()
+        getodos();
+       })
 
     }
+    function getodos()
+    {
+        //this function makes an api call and assign the data to todos and then call genui function which is the main funcion to display the ui we pass todos array of object to it
+        fetch("http://localhost:3000/todos")
+        .then(Response=>Response.json())
+        .then(data=>{
+            todos=data;
+            console.log(todos);
+            genui(data);
+        })
+    }
+    function genui(data)
+    {
+        //it accepts the value and store it in a variable called data 
+        document.getElementById('mytasks').innerHTML='';
+        //when the function is called i remove all li in the list 
+        document.getElementById('myform').reset();
+        //and also reset the function
+        ftodos=data;
+        //i used for each to iterate over array of objects 
+        ftodos.forEach(element => {
+            // i created an ui using template literal this is displayed or replace the li with this ui when the user clicks on edit button
+            const editui = `<input type="text" id="newtaskname" value="${element.taskname}"><button id="savebtn">save</button><button id="cancelbtn">cancel</button>`;
+            const li = document.createElement('li');
+            // li.innerHTML=`<p>${element.taskname+"--"+" Priority:"+element.priority+"-- -- Date:"+element.date+" Time:"+element.time}</p>`;
+            const p = document.createElement("p");
+            //created elements for task name , priority , date and time and assigned the values to those elements and also assigned some styles to those elements based on the priority of the task
+            const taskSpan = document.createElement("span");
+            taskSpan.id='tasknamei';
+            taskSpan.textContent = element.taskname;
+            const prioritySpan = document.createElement("span");
+            prioritySpan.id='priority';
+            if(element.priority=="high")
+                {
+                    taskSpan.style.background="red";
+                }
+                else if(element.priority=="medium")
+                {
+                    taskSpan.style.background="yellow";
+                }
+                else{
+                    taskSpan.style.background="green";
+                }
+
+
+
+    const dateSpan = document.createElement("span");
+    dateSpan.textContent = `  ${element.date}`;
+    dateSpan.id='date';
+
+    const timeSpan = document.createElement("span");
+    timeSpan.textContent = `  ${element.time}`;
+    timeSpan.id='time';
+
+
+    p.append(taskSpan,timeSpan,dateSpan);
+    //i appended all the spans to the p element and then appended that p element to the li element and then appended that li element to the ul element with id mytasks
+
+    li.appendChild(p);
+                const completebtn = document.createElement('button');
+                let taskname = element.taskname;
+                const editbtn = document.createElement('button');
+                editbtn.innerText='Edit task name'
+                editbtn.classList.add('btn');
+                editbtn.style.background="orange";
+                li.appendChild(editbtn);
+                completebtn.innerText=element.status;
+                completebtn.classList.add('btn');
+                completebtn.style.background='violet'
+                //when the user clicks on complete button the status of the task is changed to completed or incompleted based on the previous status and also the text of the button is changed to the current status and then an api call is made to update the status in the json server and then re-render the ui
+                completebtn.onclick=()=>{
+                element.status = element.status === "completed" ? "incompleted" : "completed";
+                completebtn.textContent = element.status;
+                element.status=completebtn.textContent;
+                fetch(`http://localhost:3000/todos/${element.id}`,{
+                    method:"PATCH",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify(
+                        {
+                            status:element.status
+                        }
+                    )
+                })
+                .then(Response=>Response.json())
+                .then(data=>{
+                    //i called addlog function and sent an message to the function that task with name and status is changed to current status
+                    addlog(`Task with name ${element.taskname} status changed to ${element.status}`);
+                    getodos();
+                }) 
+                }
+                //when the user clicks on complete button the text of the task is changed to line through if the status is completed and if the status is incompleted then the line through is removed
+                taskSpan.style.textDecoration = element.status == "completed" ? "line-through" : "none";
+                li.appendChild(completebtn)
+            const deletebtn= document.createElement('button');
+            deletebtn.classList.add('btn');
+            deletebtn.style.background='red';
+            deletebtn.innerText='Delete';
+            deletebtn.onclick = () => {
+                //when the user clicks on delete button an confirmation message is displayed to the user using template literal and if the user clicks on cancel button then the ui is re-rendered and if the user clicks on confirm button then the task is deleted from the json server using an api call and then re-render the ui
+        li.innerHTML = `
+            <p>Are you sure you want to delete ${taskname}?</p>
+            <button id="cancelBtn">Cancel</button>
+            <button id="confirmBtn">Confirm</button>
+        `;
+
+        document.getElementById("cancelBtn").onclick = () => {
+            getodos(); 
+        };
+
+        document.getElementById("confirmBtn").onclick = () => {
+            deleteTask(element.id);
+        };
+    };
+            li.appendChild(deletebtn);
+            document.getElementById('mytasks').appendChild(li);
+            editbtn.onclick=()=>{
+                li.innerHTML=editui;
+                document.getElementById('savebtn').id='savebtn';
+                document.getElementById('cancelbtn').id='cancelbtn';
+                document.getElementById('cancelbtn').style.background='red';
+                document.getElementById('cancelbtn').classList.add('btn');
+                document.getElementById('cancelbtn').onclick=()=>{
+                    getodos();
+                }
+                document.getElementById('savebtn').onclick=()=>{
+                    const newtaskname = document.getElementById('newtaskname').value;
+                    if(newtaskname)
+                    {
+                        fetch(`http://localhost:3000/todos/${element.id}`,{
+                            method:"PATCH",
+                            headers:{
+                                "Content-Type":"application/json"
+                            },
+                            body:JSON.stringify(
+                                {
+                                    taskname:newtaskname
+                                }
+                            )
+                        })
+                        .then(Response=>Response.json())
+                        .then(data=>{
+                            addlog(`Task with name ${taskname} changed to ${newtaskname}`);
+                            getodos();
+                        }) 
+                    }
+                    else{
+                        alert('task name cant be empty');
+                        getodos();
+                    }   
+            }
+            }
+            
+
+            });
+        
+            
+        }
+        
+            
+            function deleteTask(id)
+            {
+                //i made an api call using fetch with the id of the task to be deleted and with delete method and then re-render the ui
+                fetch(`http://localhost:3000/todos/${id}`,{
+                    method:"DELETE",
+                })
+                .then(res=>{
+                    addlog(`Task with id ${id} deleted`);
+                    getodos();
+                })
+            }
+            function addlog(message)
+            {
+            //i made an api call to the json server which is running in localhost with port number 3000 and with the end point logs and with post method to add the log to the json server and then re-render the logs by calling genlogs function
+                fetch("http://localhost:3000/logs",{
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        message:message,
+                        date:new Date().toLocaleDateString(),
+                        time:new Date().toLocaleTimeString()
+                    })
+                }).then(res=>res.json())
+                .then(data=>{
+                    genlogs();
+                })
+            }
+            function genlogs()
+            {
+                //this function is used to display the logs in the ui it makes an api call to the json server to get the logs and then display it in the ui and also added a button to delete all logs and when the user clicks on that button an confirmation message is displayed and if the user clicks on confirm button then all logs are deleted from the json server using an api call and then re-render the logs
+                fetch("http://localhost:3000/logs")
+                .then(res=>res.json())
+                .then(data=>{
+                    document.getElementById('mylogs').innerHTML='';
+                    const deletelogsbtn = document.createElement('button');
+                    deletelogsbtn.classList.add('btn');
+                    deletelogsbtn.style.marginBottom='10px';
+                    deletelogsbtn.innerText='Delete all logs'
+                    deletelogsbtn.style.background='red';
+                    deletelogsbtn.onclick=()=>{
+                        if(confirm('Are you sure you want to delete all logs?'))
+                        //when the user clicks on delete all logs button an confirmation message is displayed to the user using confirm predefined function and if the user clicks on confirm button then the condition returns true and then all logs are deleted from the json server using an api call and then re-render the logs and if the user clicks on cancel button then the condition returns false and then nothing happens
+                    {
+                        fetch("http://localhost:3000/logs")
+                        .then(res=>res.json())
+                        .then(data=>{
+                            data.forEach(log=>{
+                                fetch(`http://localhost:3000/logs/${log.id}`,{
+                                    method:"DELETE"
+                                }).then(res=>res.json())
+                                .then(data=>{
+                                    genlogs();
+                                })
+                            })
+                        })
+                    }
+                    }
+                    document.getElementById('mylogs').appendChild(deletelogsbtn);
+                    data.forEach(log=>{
+                        const li = document.createElement('li');
+                        li.innerText=`${log.message}--Date:${log.date} Time:${log.time}`;
+                        document.getElementById('mylogs').appendChild(li);
+                    })
+                })
+            }
+            const filter = document.getElementById('filter');
+            filter.onchange=()=>{
+                //when the user changes the value of filter option the value of that option is stored in a variable and then based on the value of that variable the todos are filtered and then passed to genui function to display the filtered todos in the ui   
+                const filterValue = filter.value;
+                const filteredTodos = filterValue=="all"?todos:todos.filter(t=>t.status==filterValue);
+                    genui(filteredTodos);
+                
+            }
+            document.getElementById('filterpriority').onchange=()=>{
+                //when the user changes the value of filter option the value of that option is stored in a variable and then based on the value of that variable the todos are filtered and then passed to genui function to display the filtered todos in the ui
+                const filterValue = document.getElementById('filterpriority').value;
+                const filteredTodos = filterValue=="all"?todos:todos.filter(t=>t.priority==filterValue);
+                    genui(filteredTodos);
+            }
+            function cancel()
+            {
+                console.log('clicked');
+                getodos();
+            }
+            function canceldelete(){
+                //when the user clicks on cancel button in delete confirmation message the ui is re-rendered by calling getodos function
+                console.log("clicked");
+                getodos();
+            }
+
+        getodos();
+        genlogs();
 </script>
 </html>
